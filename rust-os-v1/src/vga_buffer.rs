@@ -1,5 +1,12 @@
 #![allow(dead_code)]
-use core::fmt;
+use core::{
+    clone::Clone,
+    cmp::{Eq, PartialEq},
+    fmt::{self, Debug},
+    marker::Copy,
+    prelude::v1::derive,
+    result::Result::Ok,
+};
 use volatile::Volatile;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -33,6 +40,7 @@ impl ColorCode {
     }
 }
 
+/// Represents a character and its color code on the VGA text buffer.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
 struct ScreenChar {
@@ -43,6 +51,7 @@ struct ScreenChar {
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
+/// A buffer that represents the VGA text mode screen.
 #[repr(transparent)]
 struct Buffer {
     chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
@@ -158,4 +167,21 @@ macro_rules! println {
 pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
+}
+
+#[test_case]
+fn test_println_simple() {
+    for _ in 0..100 {
+        println!("Test print 100")
+    }
+}
+
+#[test_case]
+fn test_println_output() {
+    let s = "Some test string that fits on single line";
+    println!("{}", s);
+    for (i, c) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.ascii_character), c);
+    }
 }
