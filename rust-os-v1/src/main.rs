@@ -31,10 +31,17 @@ fn panic(info: &PanicInfo) -> ! {
 pub extern "C" fn _start() -> ! {
     // panic!("Some panic message");
     println!("Hello World{}", "!");
+
+    rust_os_v1::init();
+
+    // invoke breakpoint exception
+    x86_64::instructions::interrupts::int3();
+
     println!("Hello Again {}", "!");
 
     #[cfg(test)]
     test_main();
 
+    println!("It did not crash!");
     loop {}
 }
