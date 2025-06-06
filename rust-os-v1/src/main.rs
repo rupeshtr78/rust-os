@@ -30,11 +30,24 @@ fn panic(info: &PanicInfo) -> ! {
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
     // panic!("Some panic message");
-    println!("Hello World{}", "!");
+    println!("Starting Kernal{}", "!");
+
+    rust_os_v1::init();
+
+    // invoke breakpoint exception
+    // x86_64::instructions::interrupts::int3();
+
+    // // trigger a page fault
+    // unsafe {
+    //     let ptr = 0xdeadbeef as *mut u8; // Invalid address
+    //     *ptr = 42; // This will cause a page fault
+    // }
+
     println!("Hello Again {}", "!");
 
     #[cfg(test)]
     test_main();
 
+    println!("It did not crash!");
     loop {}
 }
