@@ -2,6 +2,8 @@
 
 A minimal operating system kernel written in Rust, following the [*Writing an OS in Rust*](https://os.phil-opp.com/) tutorial series by Philipp Oppermann.
 
+![x86_64 Rust OS](image.png)
+
 ## Features Added 
 - Bootable via BIOS with custom bootloader
 - VGA text mode output (`vga_buffer`)
