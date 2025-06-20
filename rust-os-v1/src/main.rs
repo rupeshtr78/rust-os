@@ -29,7 +29,16 @@ fn panic(info: &PanicInfo) -> ! {
 /// In the body of the for loop, we use the offset method to write the string byte and the corresponding color byte (0xb is a light cyan).
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
-    // panic!("Some panic message");
+    println!(
+        r#"
+        ____  _   _ ____ _____   ___  ____  
+        |  _ \| | | / ___|_   _| / _ \/ ___| 
+        | |_) | | | \___ \ | |  | | | \___ \ 
+        |  _ <| |_| |___) || |  | |_| |___) |
+        |_| \_\\___/|____/ |_|   \___/|____/ 
+                    V1
+        "#
+    );
     println!("Starting Kernal{}", "!");
 
     rust_os_v1::init();
