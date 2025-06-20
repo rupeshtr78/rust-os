@@ -11,7 +11,7 @@ use rust_os_v1::println;
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    rust_os_v1::hlt_loop();
 }
 
 // This function is called on panic in tests.
@@ -49,5 +49,6 @@ pub extern "C" fn _start() -> ! {
     test_main();
 
     println!("It did not crash!");
-    loop {}
+    // loop {}
+    rust_os_v1::hlt_loop();
 }
